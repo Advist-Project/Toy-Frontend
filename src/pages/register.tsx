@@ -11,18 +11,7 @@ function RegisterPage(props){
   const [typingConfirmPassword, setConfirmPassword] = useState("")
 
     // 키보드 입력시 입력내용 input tag에 써주기
-  const onNameHandler = (event) => {
-      setName(event.currentTarget.value)
-  }    
-    const onEmailHandler = (event) => {        
-      setEmail(event.currentTarget.value)
-  }
-  const onPasswordHandler = (event) => {
-      setPassword(event.currentTarget.value)
-  }  
-  const onConfirmPasswordHandler = (event) => {
-    setConfirmPassword(event.currentTarget.value)
-  }
+
 const onSubmitEmailHandler = (event) => {
   event.preventDefault();
   alert('입력하신 이메일로 인증메일이 발송되었습니다.')
@@ -51,19 +40,19 @@ const onSubmitAllHandler = (event) => {
           <Content onSubmit = {onSubmitAllHandler}>
                 <Name>
                   <NameHeader>이름</NameHeader>
-                  <NameInput type = "text" value={typingName} placeholder ="이름을 입력하세요" onChange = {onNameHandler} />
+                  <NameInput type = "text" value={typingName} placeholder ="이름을 입력하세요" onChange = {(event) => setName(event.currentTarget.value)} />
                 </Name>
                 <Email>
                   <EmailHeader>이메일</EmailHeader>
                   <EmailSummit onSubmit = {onSubmitEmailHandler}>
-                    <EmailInput type = "email" value={typingEmail} placeholder ="이메일을 입력하세요"  onChange = {onEmailHandler}/>
-                    <EmailConfirm>인증하기</EmailConfirm>
+                    <EmailInput type = "email" value={typingEmail} placeholder ="이메일을 입력하세요"  onChange = {(event) => setEmail(event.currentTarget.value)}/>
+                    <EmailConfirm type="submit">인증하기</EmailConfirm>
                   </EmailSummit>
                 </Email>
                 <Password>
                   <PasswordHeader>비밀번호</PasswordHeader>
-                  <PasswordInput type = "password" value={typingPassword} placeholder ="비밀번호를 입력해주세요 (6자 이상)"  onChange = {onPasswordHandler} />
-                  <PasswordConfirmInput type = "password" value={typingConfirmPassword} placeholder ="비밀번호를 한 번 더 입력해주세요."  onChange = {onConfirmPasswordHandler} />
+                  <PasswordInput type = "password" value={typingPassword} placeholder ="비밀번호를 입력해주세요 (6자 이상)"  onChange = {(event) => setPassword(event.currentTarget.value)} />
+                  <PasswordConfirmInput type = "password" value={typingConfirmPassword} placeholder ="비밀번호를 한 번 더 입력해주세요."  onChange = {(event) => setConfirmPassword(event.currentTarget.value)} />
                 </Password>
 
                {/* 약관동의 & 제출버튼 */}

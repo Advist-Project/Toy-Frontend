@@ -12,7 +12,7 @@ export const Agreement= () => {
       <AgreementSummit>
       <ArgreementHeader>약관동의</ArgreementHeader>
       <ArgreementCheckForm>
-        <AgreementCheckAll>
+        <AgreementCheckAll>    
             <CheckBox type="image" checked={!isCheckedAll} onClick = {() => setCheckedAll(!isCheckedAll)} src={CheckImg[getImageNameAll]}/>
             <AgreementCheckAllMsg>모두 동의합니다.</AgreementCheckAllMsg>
         </AgreementCheckAll>
@@ -21,9 +21,8 @@ export const Agreement= () => {
         <AgreementList/>
 
       </ArgreementCheckForm>    
-      <SummitButton>버튼만 누르면 가입완료!</SummitButton>                
+      <SummitButton type ="submit">버튼만 누르면 가입완료!</SummitButton>                
     </AgreementSummit>
-
 
     );
   };

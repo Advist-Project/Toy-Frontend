@@ -1,19 +1,18 @@
 import React, {useState} from "react";
 import styled from "@emotion/styled";
 
-
 export const AgreementList = () => {
-
     const [isChecked1,setChecked1] = useState(false);
     const [isChecked2,setChecked2] = useState(false);
     const [isChecked3,setChecked3] = useState(false);
     const [isChecked4,setChecked4] = useState(false);
     const [isChecked5,setChecked5] = useState(false);
     const getImageName1 = isChecked1? 'check' : 'uncheck';
-    const getImageName2 = isChecked1? 'check' : 'uncheck';
-    const getImageName3 = isChecked1? 'check' : 'uncheck';    
-    const getImageName4 = isChecked1? 'check' : 'uncheck';
-    const getImageName5 = isChecked1? 'check' : 'uncheck';
+    const getImageName2 = isChecked2? 'check' : 'uncheck';
+    const getImageName3 = isChecked3? 'check' : 'uncheck';    
+    const getImageName4 = isChecked4? 'check' : 'uncheck';
+    const getImageName5 = isChecked5? 'check' : 'uncheck';
+
 
   return (
 
