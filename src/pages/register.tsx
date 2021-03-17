@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import styled from "@emotion/styled";
 
 import { Agreement } from  "components/agreement";
+import {isEmail, isPassword, isSummit} from "components/check";
 
 function RegisterPage(props){
 
@@ -10,19 +11,16 @@ function RegisterPage(props){
   const [typingPassword, setPassword] = useState("");
   const [typingConfirmPassword, setConfirmPassword] = useState("")
 
-    // 키보드 입력시 입력내용 input tag에 써주기
+  // 키보드 입력시 입력내용 input tag에 써주기
 
 const onSubmitEmailHandler = (event) => {
   event.preventDefault();
-  alert('입력하신 이메일로 인증메일이 발송되었습니다.')
+  console.log(typingEmail)
+
 } 
 
 const onSubmitAllHandler = (event) => {
   event.preventDefault(); // 로그인 버튼 클릭시 리프레시 막아줌
-
-  if(typingPassword !== typingConfirmPassword){
-      return alert('비밀번호가 일치하지 않습니다.')
-  }
 
   let body = {
     name : typingName,
@@ -44,19 +42,23 @@ const onSubmitAllHandler = (event) => {
                 </Name>
                 <Email>
                   <EmailHeader>이메일</EmailHeader>
-                  <EmailSummit onSubmit = {onSubmitEmailHandler}>
+                  <EmailSummit>
                     <EmailInput type = "email" value={typingEmail} placeholder ="이메일을 입력하세요"  onChange = {(event) => setEmail(event.currentTarget.value)}/>
-                    <EmailConfirm type="submit">인증하기</EmailConfirm>
-                  </EmailSummit>
+                    <EmailConfirm onClick = {onSubmitEmailHandler} type="submit" style = {{background : isEmail(typingEmail) ? "yellow" : "#E4E5ED", color : isEmail(typingEmail) ? "black" : "#9A9BA7" }} >인증하기</EmailConfirm>
+                  </EmailSummit>   
+                  {(typingEmail === "" || isEmail(typingEmail)) ? (<span hidden={true}/>) : (<span style = {{color : "red", order : 3, fontSize : "12px"}}>이메일 형식이 유효하지 않습니다.</span>)}               
                 </Email>
                 <Password>
                   <PasswordHeader>비밀번호</PasswordHeader>
                   <PasswordInput type = "password" value={typingPassword} placeholder ="비밀번호를 입력해주세요 (6자 이상)"  onChange = {(event) => setPassword(event.currentTarget.value)} />
-                  <PasswordConfirmInput type = "password" value={typingConfirmPassword} placeholder ="비밀번호를 한 번 더 입력해주세요."  onChange = {(event) => setConfirmPassword(event.currentTarget.value)} />
+                  {(typingPassword === "" || isPassword(typingPassword)) ? (<span hidden={true}/>) : (<span style = {{color : "red", order : 1, fontSize : "12px"}}>비밀번호는 6자 이상 입력해주세요.</span>)}
+                  <PasswordConfirmInput disabled={(typingPassword === "")} type = "password" value={typingConfirmPassword} placeholder ="비밀번호를 한 번 더 입력해주세요."  onChange = {(event) => setConfirmPassword(event.currentTarget.value)} />
+                  {((typingConfirmPassword === "") || (typingPassword === typingConfirmPassword)) ? (<span hidden={true}/>) : (<span style = {{color : "red", order : 3, fontSize : "12px"}}>입력하신 비밀번호와 동일하게 입력해주세요.</span>)}
                 </Password>
 
                {/* 약관동의 & 제출버튼 */}
                 <Agreement/>
+                <SummitButton type ="submit" style = {{background : (isSummit(typingPassword, typingConfirmPassword, typingEmail)) ? "yellow" : "#E4E5ED", color : isSummit(typingPassword, typingConfirmPassword, typingEmail) ? "black" : "#9A9BA7" }}>버튼만 누르면 가입완료!</SummitButton>
           </Content>
         </Frame>
       </Container>
@@ -230,7 +232,7 @@ const EmailHeader = styled.div`
   flex-grow: 0;
 `;
 
-const EmailSummit = styled.form`
+const EmailSummit = styled.div`
   display : flex;
   flex-direction : row;
 
@@ -278,12 +280,10 @@ const EmailConfirm = styled.button`
   left: 283px;
   top: 5px;  
 
-  background: #E4E5ED;
   border: 1px solid #E4E5ED;
   box-sizing: border-box;
   border-radius: 4px;
 
-  color: #9A9BA7;
   font-size: 14px;  
 
 `;
@@ -299,6 +299,7 @@ const Password = styled.div`
   left: 0px;
   top: 200px;
 
+  margin-top : 20px;
 
   /* Inside Auto Layout */
 
@@ -347,7 +348,7 @@ const PasswordInput = styled.input`
   flex: none;
   order: 1;
   flex-grow: 0;
-  margin: 10px 0px;
+  margin: 10px 0px 0px 0px;
 `;
 
 const PasswordConfirmInput = styled.input`
@@ -355,6 +356,8 @@ const PasswordConfirmInput = styled.input`
   height: 50px;
   left: 0px;
   top: 95px;
+
+  margin-top : 10px;
 
   background: #FAFAFA;
   border: 1px solid #E6E6E6;
@@ -366,6 +369,26 @@ const PasswordConfirmInput = styled.input`
   flex: none;
   order: 2;
   flex-grow: 0;
+`;
+
+const SummitButton = styled.button`
+  width: 398px;
+  height: 50px;
+  left: 0px;
+  top: 272px;
+
+  cursor : pointer;
+  background: #E4E5ED;
+  border: 1px solid #E4E5ED;
+  box-sizing: border-box;
+  border-radius: 4px;
+  color: #9A9BA7;
+  /* Inside Auto Layout */
+
+  flex: none;
+  order: 4;
+  flex-grow: 0;
+  margin: 10px 0px;
 `;
 
 

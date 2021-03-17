@@ -1,27 +1,79 @@
 import React, {useState} from "react";
 
 import styled from "@emotion/styled";
-import {AgreementList} from "./agreement-list";
+// import {AgreementList} from "./agreement-list";
 
-export const Agreement= () => {
-
+export const Agreement = () => {
   const [isCheckedAll,setCheckedAll] = useState(false);
-  const getImageNameAll = isCheckedAll ? 'check' : 'uncheck';
+  const [isChecked1,setChecked1] = useState(false);
+  const [isChecked2,setChecked2] = useState(false);
+  const [isChecked3,setChecked3] = useState(false);
+  const [isChecked4,setChecked4] = useState(false);
+  const [isChecked5,setChecked5] = useState(false);
+
+  const checkallfunction = () => {
+    setCheckedAll(!isCheckedAll)
+    setChecked1(!isCheckedAll)
+    setChecked2(!isCheckedAll)
+    setChecked3(!isCheckedAll)
+    setChecked4(!isCheckedAll)
+    setChecked5(!isCheckedAll)
+  }
 
     return (
       <AgreementSummit>
       <ArgreementHeader>약관동의</ArgreementHeader>
       <ArgreementCheckForm>
         <AgreementCheckAll>    
-            <CheckBox type="image" checked={!isCheckedAll} onClick = {() => setCheckedAll(!isCheckedAll)} src={CheckImg[getImageNameAll]}/>
+            <CheckBox type="image" defaultChecked={isCheckedAll} onClick = {checkallfunction} src={CheckImg[isCheckedAll ? 'check' : 'uncheck']}/>
             <AgreementCheckAllMsg>모두 동의합니다.</AgreementCheckAllMsg>
         </AgreementCheckAll>
         <AgreementCheckAllLine></AgreementCheckAllLine>
-        {/* 약관 리스트 */}
-        <AgreementList/>
+        {/* 약관 리스트 */}   
+        <AgreementCheckElseForm>
+          <AgreementCheckElse>
+        <CheckBox type="image" defaultChecked={isChecked1} onClick = {() => setChecked1(!isChecked1)} src={CheckImg[isChecked1? 'check' : 'uncheck']}/>
+          <AgreementCheckMsgForm>
+            <AgreementCheckMsg>만 14세 이상입니다.</AgreementCheckMsg>
+            <span style={{color : 'red'}}>&nbsp;(필수)</span>
+          </AgreementCheckMsgForm>                       
+        </AgreementCheckElse>
 
-      </ArgreementCheckForm>    
-      <SummitButton type ="submit">버튼만 누르면 가입완료!</SummitButton>                
+        <AgreementCheckElse>
+        <CheckBox type="image" defaultChecked={isChecked2} onClick = {() => setChecked2(!isChecked2)} src={CheckImg[isChecked2? 'check' : 'uncheck']}/>
+          <AgreementCheckMsgForm>
+            <a href="http://www.naver.com" target="_blank">서비스 이용약관</a>
+            <AgreementCheckMsg> 에 동의합니다.</AgreementCheckMsg>
+            <span style={{color : 'red'}}>&nbsp;(필수)</span>
+          </AgreementCheckMsgForm>                       
+        </AgreementCheckElse>
+
+        <AgreementCheckElse>
+        <CheckBox type="image" defaultChecked={isChecked3} onClick = {() => setChecked3(!isChecked3)} src={CheckImg[isChecked3? 'check' : 'uncheck']}/>
+          <AgreementCheckMsgForm>
+            <a href="http://www.naver.com" target="_blank">개인정보 수집•이용</a>
+            <AgreementCheckMsg> 에 동의합니다.</AgreementCheckMsg>
+            <span style={{color : 'red'}}>&nbsp;(필수)</span>
+          </AgreementCheckMsgForm>                       
+        </AgreementCheckElse>   
+
+        <AgreementCheckElse>
+        <CheckBox type="image" defaultChecked={isChecked4} onClick = {() => setChecked4(!isChecked4)} src={CheckImg[isChecked4? 'check' : 'uncheck']}/>
+          <AgreementCheckMsgForm>
+            <AgreementCheckMsg>이벤트 할인 혜택 알림 수신에 동의합니다. (선택)</AgreementCheckMsg>
+          </AgreementCheckMsgForm>                       
+        </AgreementCheckElse>
+
+        <AgreementCheckElse>
+        <CheckBox type="image" defaultChecked={isChecked5} onClick = {() => setChecked5(!isChecked5)} src={CheckImg[isChecked5? 'check' : 'uncheck']}/>
+          <AgreementCheckMsgForm>
+            <AgreementCheckMsg>장기 미접속 시 계정 활성 상태 유지합니다. (선택)</AgreementCheckMsg>
+          </AgreementCheckMsgForm>                       
+        </AgreementCheckElse>                                                             
+      </AgreementCheckElseForm>
+
+
+      </ArgreementCheckForm>                    
     </AgreementSummit>
 
     );
@@ -35,7 +87,7 @@ const AgreementSummit = styled.div`
   padding: 0px;
 
   width: 398px;
-  height: 322px;
+  height: 272px;
   left: 0px;
   top: 375px;
 
@@ -104,16 +156,6 @@ const AgreementCheckAll = styled.div`
   margin : 20px 15px;
 `;
 
-
-const CheckBox = styled.input`
-  height: 18px;
-  width: 18px;
-  left: 0px;
-  top: 0px;
-  border-radius: 0px;
-  background: url(image.png);
-`;
-
 const AgreementCheckAllMsg = styled.div`
   width: 250px;
   height: 21px;
@@ -147,27 +189,75 @@ const AgreementCheckAllLine = styled.div`
   background: #CCCCCC;  
 `;
 
-const SummitButton = styled.button`
-  width: 398px;
-  height: 50px;
-  left: 0px;
-  top: 272px;
 
-  cursor : pointer;
-  background: #E4E5ED;
-  border: 1px solid #E4E5ED;
-  box-sizing: border-box;
-  border-radius: 4px;
-  color: #9A9BA7;
+const AgreementCheckElseForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+
+  width: 245px;
+  height: 141px;
+  left: 16px;
+  top: 70px;
+`;
+
+const AgreementCheckElse = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+
+  width: 381px;
+  height: 21px;
+  left: 0px;
+  top: 0px;
+
+
+  /* Inside Auto Layout */
+  flex-grow: 0;
+  margin : 0px 0px 9px 15px;
+`;
+
+const AgreementCheckMsgForm = styled.div`
+  width: 360px;
+  height: 21px;
+  line-height : 21px;  
+  left: 23px;
+  top: 0px;
+
+  font-style: normal;
+  font-weight: normal;
+  font-size: 11px;
+  line-height: 20px;
+  /* or 182% */
+
+
+  color: #555969;
+
+  display : flex;
+  flex-direction: row;
+
   /* Inside Auto Layout */
 
-  flex: none;
-  order: 4;
-  flex-grow: 0;
-  margin: 10px 0px;
+  margin: 0px 5px;
+`;
+
+const AgreementCheckMsg = styled.div`
+  width: auto;
+  height: 21px;
+`;
+
+const CheckBox = styled.input`
+  height: 18px;
+  width: 18px;
+  left: 0px;
+  top: 0px;
+  border-radius: 0px;
+  background: url(image.png);
 `;
 
 const CheckImg = {
-  check : "https://kmong.com/img/checkBox/round_checked.png",
-  uncheck : "https://kmong.com/img/checkBox/round_unCheck.png"
-}
+    check : "https://kmong.com/img/checkBox/round_checked.png",
+    uncheck : "https://kmong.com/img/checkBox/round_unCheck.png"
+  }
