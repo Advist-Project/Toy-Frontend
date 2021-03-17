@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import styled from "@emotion/styled";
-import axios from "axios";
+//import axios from "axios";
+import { RequestBootpay } from '../components/request-bootpay';
 
-interface IOrderForm{ phoneNumber: string; address: string; payMethod: string };
+interface IOrderForm{ price: number, name: string, phoneNumber: string; username: string; email: string; address: string; payMethod: string };
 
 function OrderPage() {
   let [orderForm, setOrderForm] = useState<IOrderForm>({
+    price: 1100, //가격과 책이름은 상품정보 api 통해서 가져올 예정
+    name: "전자책입니다",
+    payMethod: "card", //초기값 신용카드
+    username: "홍길동", //이름과 이메일은 유저정보 api 통해서 가져올 예정
+    email: "kildoong@hong.com",
     phoneNumber: "",
-    address: "",
-    payMethod: "신용카드"
+    address: ""
   });
   const { phoneNumber, address } = orderForm; //orderForm에 있는 값 꺼내오기
 
@@ -24,22 +29,6 @@ function OrderPage() {
   let [selectedChkbox, selectChkbox] = useState<string>("SC0010");
   let [agreementState, setAgreementState] = useState<boolean>(false);
 
-  function requestPayment(){
-    let params:string = JSON.stringify({...orderForm, "agreementState": agreementState});
-    console.log(params);
-  
-    // return axios.post('/user', {
-    //   firstName: 'Fred',
-    //   lastName: 'Flintstone'
-    // })
-    // .then(function (response) {
-    //   console.log(response);
-    // })
-    // .catch(function (error) {
-    //   console.log(error);
-    // });
-  }
-
   return (
     <Background>
       <Title>결제하기</Title>
@@ -51,48 +40,38 @@ function OrderPage() {
           </OrderInfo>
           <OrderCustomerInfo>
             <SectionTitle>전화번호</SectionTitle>
-            <input type="tel" name="phoneNumber" value={phoneNumber} onChange={handleChange} />
+            <input type="tel" name="phoneNumber" value={phoneNumber} onChange={handleChange} placeholder="010-0000-0000" />
             <SectionTitle>주소</SectionTitle>
-            <input type="address" name="address" value={address} onChange={handleChange} />
+            <input type="address" name="address" value={address} onChange={handleChange} placeholder="주소를 입력해 주세요." />
           </OrderCustomerInfo>
           <OrderPaymentMethods>
             <SectionTitle>결제방법</SectionTitle>
+            {/* card - 신용카드 결제
+                phone - 휴대폰 소액결제
+                bank - 실시간 계좌이체
+                vbank - 가상계좌
+                auth - 본인인증 ( 현재는 다날만 가능 )
+                card_rebill - 카드 정기결제
+                easy - 카카오, 페이코등의 간편결제
+            */}
             <input type="radio" name="payMethod" id="payMethod_SC0010"
-                                                value="신용카드"
+                                                value="card"
                                                 checked={selectedChkbox === "SC0010" ? true : false }
                                                 onClick={()=>selectChkbox("SC0010")}
                                                 onChange={handleChange} />
             <label htmlFor="payMethod_SC0010">신용카드</label>
-            <input type="radio" name="payMethod" id="payMethod_SC0030"
-                                                value="실시간 계좌이체"
-                                                checked={selectedChkbox === "SC0030" ? true : false }
-                                                onClick={()=>selectChkbox("SC0030")}
-                                                onChange={handleChange} />
-            <label htmlFor="payMethod_SC0030">실시간 계좌이체</label>
-            <input type="radio" name="payMethod" id="payMethod_SC0040"
-                                                value="무통장입금"
-                                                checked={selectedChkbox === "SC0040" ? true : false }
-                                                onClick={()=>selectChkbox("SC0040")}
-                                                onChange={handleChange} />
-            <label htmlFor="payMethod_SC0040">무통장입금</label>
             <input type="radio" name="payMethod" id="payMethod_SC0060"
-                                                value="휴대폰"
+                                                value="phone"
                                                 checked={selectedChkbox === "SC0060" ? true : false }
                                                 onClick={()=>selectChkbox("SC0060")}
                                                 onChange={handleChange} />
             <label htmlFor="payMethod_SC0060">휴대폰</label>
-            <input type="radio" name="payMethod" id="payMethod_PAYNOW"
-                                                value="페이나우"
-                                                checked={selectedChkbox === "페이나우" ? true : false }
-                                                onClick={()=>selectChkbox("페이나우")}
+            <input type="radio" name="payMethod" id="payMethod_KAKAO"
+                                                value="kakao"
+                                                checked={selectedChkbox === "KAKAO" ? true : false }
+                                                onClick={()=>selectChkbox("KAKAO")}
                                                 onChange={handleChange} />
-            <label htmlFor="payMethod_PAYNOW">페이나우</label>
-            <input type="radio" name="payMethod" id="payMethod_PAYCO"
-                                                value="페이코"
-                                                checked={selectedChkbox === "페이코" ? true : false }
-                                                onClick={()=>selectChkbox("페이코")}
-                                                onChange={handleChange} />
-            <label htmlFor="payMethod_PAYCO">페이코</label>
+            <label htmlFor="payMethod_KAKAO">카카오페이</label>
           </OrderPaymentMethods>
         </OrderMain>
         <OrderSummary>
@@ -106,7 +85,7 @@ function OrderPage() {
             </div>
             {
               loginState?
-              <PayGuestLoginBtn onClick={requestPayment}>결제하기</PayGuestLoginBtn>:
+              <RequestBootpay agreementState={agreementState} data={orderForm}>결제하기</RequestBootpay>:
               <PayGuestLoginBtn onClick={()=>{console.log('로그인해주세요.')}}>결제하기</PayGuestLoginBtn>
             }
           </OrderSummaryContent>
