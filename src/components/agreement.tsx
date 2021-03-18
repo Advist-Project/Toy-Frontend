@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 
 import styled from "@emotion/styled";
 // import {AgreementList} from "./agreement-list";
@@ -11,7 +11,12 @@ export const Agreement = () => {
   const [isChecked4,setChecked4] = useState(false);
   const [isChecked5,setChecked5] = useState(false);
 
-  const checkallfunction = () => {
+  useEffect(() => {
+    if(isChecked1 && isChecked2 && isChecked3 && isChecked4 && isChecked5)
+      setCheckedAll(true)
+  });
+
+  const checkAllfunction = () => {
     setCheckedAll(!isCheckedAll)
     setChecked1(!isCheckedAll)
     setChecked2(!isCheckedAll)
@@ -20,19 +25,40 @@ export const Agreement = () => {
     setChecked5(!isCheckedAll)
   }
 
+  function checkElsefunction(num : number){
+    switch(num){
+      case 1 : setChecked1(!isChecked1);
+      if(isChecked1 === true) setCheckedAll(false);
+      break;
+      case 2 : setChecked2(!isChecked2);
+      if(isChecked2 === true) setCheckedAll(false);
+      break;
+      case 3 : setChecked3(!isChecked3);
+      if(isChecked3 === true) setCheckedAll(false);
+      break;
+      case 4 : setChecked4(!isChecked4);
+      if(isChecked4 === true) setCheckedAll(false);
+      break;
+      case 5 : setChecked5(!isChecked5);
+      if(isChecked5 === true) setCheckedAll(false);
+      break;
+      default : break;              
+    }
+  }
+
     return (
       <AgreementSummit>
       <ArgreementHeader>약관동의</ArgreementHeader>
       <ArgreementCheckForm>
         <AgreementCheckAll>    
-            <CheckBox type="image" defaultChecked={isCheckedAll} onClick = {checkallfunction} src={CheckImg[isCheckedAll ? 'check' : 'uncheck']}/>
+            <CheckBox type="image" defaultChecked={isCheckedAll} onClick = {checkAllfunction} src={CheckImg[isCheckedAll ? 'check' : 'uncheck']}/>
             <AgreementCheckAllMsg>모두 동의합니다.</AgreementCheckAllMsg>
         </AgreementCheckAll>
         <AgreementCheckAllLine></AgreementCheckAllLine>
         {/* 약관 리스트 */}   
         <AgreementCheckElseForm>
           <AgreementCheckElse>
-        <CheckBox type="image" defaultChecked={isChecked1} onClick = {() => setChecked1(!isChecked1)} src={CheckImg[isChecked1? 'check' : 'uncheck']}/>
+        <CheckBox type="image" defaultChecked={isChecked1} onClick = {() => checkElsefunction(1)} src={CheckImg[isChecked1? 'check' : 'uncheck']}/>
           <AgreementCheckMsgForm>
             <AgreementCheckMsg>만 14세 이상입니다.</AgreementCheckMsg>
             <span style={{color : 'red'}}>&nbsp;(필수)</span>
@@ -40,7 +66,7 @@ export const Agreement = () => {
         </AgreementCheckElse>
 
         <AgreementCheckElse>
-        <CheckBox type="image" defaultChecked={isChecked2} onClick = {() => setChecked2(!isChecked2)} src={CheckImg[isChecked2? 'check' : 'uncheck']}/>
+        <CheckBox type="image" defaultChecked={isChecked2} onClick = {() => checkElsefunction(2)} src={CheckImg[isChecked2? 'check' : 'uncheck']}/>
           <AgreementCheckMsgForm>
             <a href="http://www.naver.com" target="_blank">서비스 이용약관</a>
             <AgreementCheckMsg> 에 동의합니다.</AgreementCheckMsg>
@@ -49,7 +75,7 @@ export const Agreement = () => {
         </AgreementCheckElse>
 
         <AgreementCheckElse>
-        <CheckBox type="image" defaultChecked={isChecked3} onClick = {() => setChecked3(!isChecked3)} src={CheckImg[isChecked3? 'check' : 'uncheck']}/>
+        <CheckBox type="image" defaultChecked={isChecked3} onClick = {() => checkElsefunction(3)} src={CheckImg[isChecked3? 'check' : 'uncheck']}/>
           <AgreementCheckMsgForm>
             <a href="http://www.naver.com" target="_blank">개인정보 수집•이용</a>
             <AgreementCheckMsg> 에 동의합니다.</AgreementCheckMsg>
@@ -58,14 +84,14 @@ export const Agreement = () => {
         </AgreementCheckElse>   
 
         <AgreementCheckElse>
-        <CheckBox type="image" defaultChecked={isChecked4} onClick = {() => setChecked4(!isChecked4)} src={CheckImg[isChecked4? 'check' : 'uncheck']}/>
+        <CheckBox type="image" defaultChecked={isChecked4} onClick = {() => checkElsefunction(4)} src={CheckImg[isChecked4? 'check' : 'uncheck']}/>
           <AgreementCheckMsgForm>
             <AgreementCheckMsg>이벤트 할인 혜택 알림 수신에 동의합니다. (선택)</AgreementCheckMsg>
           </AgreementCheckMsgForm>                       
         </AgreementCheckElse>
 
         <AgreementCheckElse>
-        <CheckBox type="image" defaultChecked={isChecked5} onClick = {() => setChecked5(!isChecked5)} src={CheckImg[isChecked5? 'check' : 'uncheck']}/>
+        <CheckBox type="image" defaultChecked={isChecked5} onClick = {() => checkElsefunction(5)} src={CheckImg[isChecked5? 'check' : 'uncheck']}/>
           <AgreementCheckMsgForm>
             <AgreementCheckMsg>장기 미접속 시 계정 활성 상태 유지합니다. (선택)</AgreementCheckMsg>
           </AgreementCheckMsgForm>                       
