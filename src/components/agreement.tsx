@@ -12,8 +12,8 @@ export const Agreement = () => {
   const [isChecked5,setChecked5] = useState(false);
 
   useEffect(() => {
-    if(isChecked1 && isChecked2 && isChecked3 && isChecked4 && isChecked5)
-      setCheckedAll(true)
+    if(isChecked1 && isChecked2 && isChecked3 && isChecked4 && isChecked5) setCheckedAll(true)
+    else setCheckedAll(false)
   });
 
   const checkAllfunction = () => {
@@ -28,19 +28,14 @@ export const Agreement = () => {
   function checkElsefunction(num : number){
     switch(num){
       case 1 : setChecked1(!isChecked1);
-      if(isChecked1 === true) setCheckedAll(false);
       break;
       case 2 : setChecked2(!isChecked2);
-      if(isChecked2 === true) setCheckedAll(false);
       break;
       case 3 : setChecked3(!isChecked3);
-      if(isChecked3 === true) setCheckedAll(false);
       break;
       case 4 : setChecked4(!isChecked4);
-      if(isChecked4 === true) setCheckedAll(false);
       break;
       case 5 : setChecked5(!isChecked5);
-      if(isChecked5 === true) setCheckedAll(false);
       break;
       default : break;              
     }
