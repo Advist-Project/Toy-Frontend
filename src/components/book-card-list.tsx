@@ -7,7 +7,7 @@ export const BookCardList = () => {
   return (
     <Container>
       {new Array(5).fill(0).map((_, index) => (
-        <BookCard key={index} idx={index} />
+        <BookCard key={index} idx={index + 1} />
       ))}
     </Container>
   );
