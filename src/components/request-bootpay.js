@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
+import { isPhoneNumber } from './check';
 
 export const RequestBootpay = (props) => {
   const { price, name, payMethod, username, email, address, phoneNumber } = props.data;
@@ -38,16 +39,16 @@ export const RequestBootpay = (props) => {
 
   return (
     <Btn onClick={()=>{
-        if(props.agreementState){ //동의 여부 확인
-          console.log(props.data);
-          if(phoneNumber){
-            requestBootpay(parameter);
-          } else {
-            alert('휴대폰 번호는 필수값 입니다.');
-          }
-        } else {
-          alert('결제에 동의해주세요!');
-        }
+      if(!phoneNumber){
+        alert('휴대폰 번호는 필수값 입니다.'); //휴대폰 번호 미입력 시
+      } else if(!isPhoneNumber(phoneNumber)){
+        alert('휴대폰 번호를 정확히 입력해주세요.'); //휴대폰 번호 형식 불일치 시
+      } else if(!props.agreementState){
+        alert('결제에 동의해주세요!'); //결제 동의 미 체크 시
+      } else {
+        requestBootpay(parameter);
+        console.log(props.data);
+      }
     }}>{ props.children }</Btn>
   );
 };

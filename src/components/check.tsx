@@ -17,3 +17,8 @@ export function isSummit(typingPassword : string, typingConfirmPassword : string
         return true;
     else return false;
 }
+
+export function isPhoneNumber(asValue : string) {
+  var regExp = /^\d{3}-\d{3,4}-\d{4}$/;
+  return regExp.test(asValue); // 형식에 맞는 경우 true 리턴
+}

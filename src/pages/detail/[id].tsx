@@ -7,7 +7,7 @@ import { ReviewList } from "components/review-card-list";
 function DetailPage({BookData}: InferGetServerSidePropsType<typeof getServerSideProps>){
   console.log(BookData.detail);
 
-  const { title, description, owner, ownerIcon } = BookData.detail;
+  const { seq, title, description, owner, ownerIcon } = BookData.detail;
 
   return (
     <Background>
@@ -39,7 +39,7 @@ function DetailPage({BookData}: InferGetServerSidePropsType<typeof getServerSide
             </Title>
             <PackagePanel>
               <PackageTitle>{title}</PackageTitle>
-              <OrderButton>주문하기</OrderButton>
+              <a href={`/order/${seq}`}><OrderButton>주문하기</OrderButton></a>
             </PackagePanel>
             <SellerProfile>
               <ProfilePicture src={ownerIcon} />
