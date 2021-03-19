@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import { Agreement } from  "components/agreement";
 import {isEmail, isPassword, isSummit} from "components/check";
 
-function RegisterPage(props){
+function RegisterPage(){
 
   const [typingName, setName] = useState("");
   const [typingEmail, setEmail] = useState("");
@@ -13,20 +13,21 @@ function RegisterPage(props){
 
   // 키보드 입력시 입력내용 input tag에 써주기
 
-const onSubmitEmailHandler = (event) => {
+const onSubmitEmailHandler = (event : any) => {
   event.preventDefault();
   console.log(typingEmail)
 
 } 
 
-const onSubmitAllHandler = (event) => {
+const onSubmitAllHandler = (event : any) => {
   event.preventDefault(); // 로그인 버튼 클릭시 리프레시 막아줌
-
+/*
   let body = {
     name : typingName,
     email : typingEmail,
     Password : typingPassword
   }
+*/
 }
 
   return (
