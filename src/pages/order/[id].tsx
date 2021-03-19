@@ -1,14 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import styled from "@emotion/styled";
 //import axios from "axios";
-import { RequestBootpay } from '../components/request-bootpay';
+import { RequestBootpay } from '../../components/request-bootpay';
+import { priceFormat } from '../../components/formatter';
 
-interface IOrderForm{ price: number, name: string, phoneNumber: string; username: string; email: string; address: string; payMethod: string };
+interface IOrderForm{ price: number, name: string, pg: string; phoneNumber: string; username: string; email: string; address: string; payMethod: string };
 
-function OrderPage() {
+function OrderPage({BookData}: InferGetServerSidePropsType<typeof getServerSideProps>){
+  const { price, title, owner, ownerIcon } = BookData.detail;
+
+  let loginState:boolean = true;
+
+  //주문서 정보
   let [orderForm, setOrderForm] = useState<IOrderForm>({
-    price: 1100, //가격과 책이름은 상품정보 api 통해서 가져올 예정
-    name: "전자책입니다",
+    price: price, //초기 가격과 책이름 @API - book/details
+    name: title,
+    pg: "inicis",
     payMethod: "card", //초기값 신용카드
     username: "홍길동", //이름과 이메일은 유저정보 api 통해서 가져올 예정
     email: "kildoong@hong.com",
@@ -25,8 +33,19 @@ function OrderPage() {
     });
   };
 
-  let loginState:boolean = true;
+  //수량 선택 용
+  let [amount, setAmount] = useState<number>(1); //초기 수량
+  const onIncrease = () => setAmount(amount + 1);
+  const onDecrease = () => setAmount(amount - 1 ? amount - 1 : amount);
+
+  useEffect(() => {
+    setOrderForm({ ...orderForm, price: price * amount });
+  },[amount]);
+
+  //결제 방법 라디오 버튼 용
   let [selectedChkbox, selectChkbox] = useState<string>("SC0010");
+
+  //결제 동의 체크박스 용
   let [agreementState, setAgreementState] = useState<boolean>(false);
 
   return (
@@ -35,8 +54,42 @@ function OrderPage() {
       <LayoutContainer>
         <OrderMain>
           <OrderInfo>
-            <SectionTitle>주문내역</SectionTitle>상품정보
-            수량선택
+            <SectionTitle>주문 내역</SectionTitle>
+            <BookInfo>
+              <BookImg src="https://d2v80xjmx68n4w.cloudfront.net/gigs/bNuAr1602485711.jpg"/>
+              <div>
+                <h4>전자책 부문 1위 '돈 버는 전자책 작성법 2021'을 드립니다.</h4>
+                <OwnerInfo>
+                  {/* 판매자명 판매자 사진 @API - book/details */}
+                  <OwnerIcon src={ownerIcon} />
+                  <OwnerName>{owner}</OwnerName>
+                </OwnerInfo>
+              </div>
+            </BookInfo>
+            <OptionsTable>
+              <colgroup>
+                <col width="538"/>
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>기본항목</th>
+                  <th className="text-center">수량선택</th>
+                  <th className="text-right">가격</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  {/* 책 제목, 가격 @API - book/details */}
+                  <td>{title}</td>
+                  <td className="text-center">
+                    <AmountBtn onClick={onDecrease}>-</AmountBtn>
+                    <Amount>{amount}</Amount>
+                    <AmountBtn onClick={onIncrease}>+</AmountBtn>
+                  </td>
+                  <td className="text-right">{priceFormat(orderForm.price)}원</td>
+                </tr>
+              </tbody>
+            </OptionsTable>
           </OrderInfo>
           <OrderCustomerInfo>
             <SectionTitle>전화번호</SectionTitle>
@@ -97,6 +150,28 @@ function OrderPage() {
 
 export default OrderPage;
 
+//서버에서 책 데이터 가져오기
+export const getServerSideProps: GetServerSideProps = async (context) => {
+
+  const res = await fetch(`https://vjsel.herokuapp.com/book/details/${context.query.id}`)
+  const data = await res.json()
+
+  if (!data) {
+    alert('데이터를 가져오는데 실패했습니다.');
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: { BookData: data },
+  }
+}
+
+
 const Background = styled.div``;
 
 const Title = styled.h2`
@@ -127,6 +202,88 @@ const OrderInfo = styled.section`
   margin-bottom: 24px;
 `;
 
+const BookInfo = styled.div`
+  display: flex;
+  margin-bottom: 24px;
+`;
+
+const BookImg = styled.img`
+  width: 120px;
+  margin-right: 12px;
+  border: 1px solid #f2f3f7;
+  border-radius: 4px;
+`;
+
+const OwnerInfo = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  margin: 4px 0 0 0;
+`;
+
+const OwnerIcon = styled.img`
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  border-radius: 50%;
+`;
+
+const OwnerName = styled.span`
+  font-size: 13px;
+  color: #9a9ba7;
+  margin-left: 8px;
+`;
+
+//주문 내역 > 옵션의 테이블
+const OptionsTable = styled.table`
+  width: 100%;
+  text-align: left;
+  table-layout: fixed;
+
+  & .text-center {
+    text-align: center;
+  }
+  & .text-right {
+    text-align: right;
+  }
+  & thead {
+    border-bottom: 1px solid #e4e5ed;
+  }
+  & thead > tr > th {
+    height: 32px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #9a9ba7;
+    margin: 0;
+    vertical-align: middle;
+  }
+  & tbody > tr > td {
+    height: 40px;
+    padding-top: 6px;
+    vertical-align: middle;
+  }
+`;
+
+const AmountBtn = styled.button`
+  background-color: #f2f3f7;
+  border-radius: 5px !important;
+  color: #8f92a6;
+  font-weight: bolder;
+  font-size: 10px;
+  width: 20px;
+  height: 20px;
+  border: 0;
+  vertical-align: middle;
+`;
+
+const Amount = styled.span`
+  font-size: 14px;
+  color: #303441;
+  display: inline-block;
+  width: 28px;
+  line-height: 20px;
+`;
+
 const OrderSummary = styled.div`
   width: 370px;
   position: relative;
@@ -145,6 +302,19 @@ const OrderCustomerInfo = styled.section`
   padding: 24px;
   border: 1px solid #e4e5ed;
   margin-bottom: 24px;
+
+  & input {
+    width: 398px;
+    height: 50px;
+    font-size: 14px;
+    line-height: 26px;
+    padding: 0 20px;
+    border-radius: 4px;
+    border: 1px solid #e4e5ed;
+  }
+  & input + h3 {
+    margin-top: 20px;
+  }
 `;
 
 const OrderPaymentMethods = styled.section`
@@ -156,6 +326,7 @@ const OrderPaymentMethods = styled.section`
 
 const SectionTitle = styled.h3`
   font-size: 15px;
+  font-weight: bold;
   line-height: 23px;
   color: #303441;
   margin: 0 0 16px 0;
