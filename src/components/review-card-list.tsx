@@ -3,12 +3,21 @@ import React from "react";
 import styled from "@emotion/styled";
 import { ReviewCard } from "./review-card";
 
-export const ReviewList = () => {
+interface IReviewListProps {
+  data: any[];
+}
+
+export const ReviewList: React.FC<IReviewListProps> = ({ data }) => {
   return (
     <Container>
       <ul>
-        {new Array(3).fill(0).map((_, index) => (
-          <ReviewCard key={index} />
+        {data.map((item) => (
+          <ReviewCard key={item.id}
+                      score={item.score}
+                      userId={item.userId}
+                      content={item.content}
+                      createdAt={item.createdAt}
+                      />
         ))}
       </ul>
       <ViewmoreButton>더 보기</ViewmoreButton>

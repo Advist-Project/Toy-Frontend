@@ -4,8 +4,9 @@ import { Rating, RatingBig } from "components/rating";
 import { ReviewList } from "components/review-card-list";
 
 
-function DetailPage({BookData}: InferGetServerSidePropsType<typeof getServerSideProps>){
+function DetailPage({BookData, Comment}: InferGetServerSidePropsType<typeof getServerSideProps>){
   console.log(BookData.detail);
+  console.log(Comment.comments);
 
   const { seq, title, description, owner, ownerIcon } = BookData.detail;
 
@@ -28,7 +29,7 @@ function DetailPage({BookData}: InferGetServerSidePropsType<typeof getServerSide
             <Section>
               <SectionTitle>서비스 평가</SectionTitle>
               <RatingBig value={4.9} count={974} />
-              <ReviewList />
+              <ReviewList data={Comment.comments} />
             </Section>
           </LeftModules>
           {/* 오른쪽 영역 */}
@@ -56,11 +57,13 @@ function DetailPage({BookData}: InferGetServerSidePropsType<typeof getServerSide
 //서버에서 책 데이터 가져오기
 export const getServerSideProps: GetServerSideProps = async (context) => {
 
-  const res = await fetch(`https://vjsel.herokuapp.com/book/details/${context.query.id}`)
-  const data = await res.json()
+  const res_book = await fetch(`https://vjsel.herokuapp.com/book/details/${context.query.id}`)
+  const data_book = await res_book.json()
 
-  if (!data) {
-    alert('데이터를 가져오는데 실패했습니다.');
+  const res_cmt = await fetch(`https://vjsel.herokuapp.com/book/comments/${context.query.id}`)
+  const data_cmt = await res_cmt.json()
+
+  if (!data_book) {
     return {
       redirect: {
         destination: '/',
@@ -70,7 +73,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   return {
-    props: { BookData: data },
+    props: { BookData: data_book, Comment: data_cmt },
   }
 }
 

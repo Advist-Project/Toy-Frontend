@@ -2,18 +2,26 @@ import React from "react";
 
 import styled from "@emotion/styled";
 import { StarRatingSmall } from "./star-rating";
+import { dateFormat } from "./formatter";
 
-export const ReviewCard = () => {
+interface IReviewCardProps {
+  score: number;
+  userId: string;
+  content: string;
+  createdAt: string;
+}
+
+export const ReviewCard: React.FC<IReviewCardProps> = ({ score, userId, content, createdAt }) => {
   return (
     <Container>
       <Image src="https://kmong.com/img/tools/main_user_gray.png" />
       <Content>
         <Info>
-          <Date>21.03.08 18:52 |</Date>
-          <StarRatingSmall value={3} />
+          <Date>{dateFormat(createdAt)} |</Date>
+          <StarRatingSmall value={score} />
         </Info>
-        <Comment>내가 여기서 쓰러질 것 같냐 아이들아 넘어져도 쓰리고 인생은 길고 내 음악도 길어 모험은 시작됐어 마미손 가자 렛츠고 도넛맨 미안해 마이크 못줘서 미안해</Comment>
-        <UserName>상*****</UserName>
+        <Comment>{content}</Comment>
+        <UserName>{userId}</UserName>
       </Content>
     </Container>
   );
