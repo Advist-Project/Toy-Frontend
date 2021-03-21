@@ -9,7 +9,7 @@ function DetailPage({BookData, Comment}: InferGetServerSidePropsType<typeof getS
   console.log(BookData.detail);
   console.log(Comment.comments);
 
-  const { seq, title, description, owner, ownerIcon } = BookData.detail;
+  const { seq, title, bookImg, description, owner, ownerIcon } = BookData.detail;
 
   return (
     <Layout title={title}>
@@ -17,7 +17,7 @@ function DetailPage({BookData, Comment}: InferGetServerSidePropsType<typeof getS
         <Content>
           {/* 왼쪽 영역 */}
           <LeftModules>
-            <Image src="https://d2v80xjmx68n4w.cloudfront.net/gigs/bNuAr1602485711.jpg" />
+            <Image src={bookImg} />
             <Rating value={4.3} count={974} />
             <Section>
               <SectionTitle>서비스 설명</SectionTitle>

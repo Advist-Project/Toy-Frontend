@@ -12,7 +12,7 @@ export const ReviewList: React.FC<IReviewListProps> = ({ data }) => {
     <Container>
       <ul>
         {data.map((item) => (
-          <ReviewCard key={item.id}
+          <ReviewCard key={item._id}
                       score={item.score}
                       userId={item.userId}
                       content={item.content}
