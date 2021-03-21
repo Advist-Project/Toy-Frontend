@@ -11,24 +11,22 @@ function RegisterPage(){
   const [typingPassword, setPassword] = useState("");
   const [typingConfirmPassword, setConfirmPassword] = useState("")
 
-  // 키보드 입력시 입력내용 input tag에 써주기
+  const onSubmitEmailHandler = (event : any) => {
+    event.preventDefault();
+    console.log(typingEmail)
 
-const onSubmitEmailHandler = (event : any) => {
-  event.preventDefault();
-  console.log(typingEmail)
+  } 
 
-} 
+  const onSubmitAllHandler = (event : any) => {
+    event.preventDefault(); // 로그인 버튼 클릭시 리프레시 막아줌
 
-const onSubmitAllHandler = (event : any) => {
-  event.preventDefault(); // 로그인 버튼 클릭시 리프레시 막아줌
-/*
-  let body = {
-    name : typingName,
-    email : typingEmail,
-    Password : typingPassword
+    let body = {
+      name : typingName,
+      email : typingEmail,
+      Password : typingPassword
+    }
+    console.log(body)
   }
-*/
-}
 
   return (
     <Background>
@@ -36,7 +34,7 @@ const onSubmitAllHandler = (event : any) => {
       <Image src = "https://d2v80xjmx68n4w.cloudfront.net/assets/desktop/pages/main/kmong_logo.png"/>
         <Frame>
           <Header>딱 이것만 체크하면 가입 완료!!</Header>
-          <Content onSubmit = {onSubmitAllHandler}>
+          <Content>
                 <Name>
                   <NameHeader>이름</NameHeader>
                   <NameInput type = "text" value={typingName} placeholder ="이름을 입력하세요" onChange = {(event) => setName(event.currentTarget.value)} />
@@ -56,10 +54,9 @@ const onSubmitAllHandler = (event : any) => {
                   <PasswordConfirmInput disabled={(typingPassword === "")} type = "password" value={typingConfirmPassword} placeholder ="비밀번호를 한 번 더 입력해주세요."  onChange = {(event) => setConfirmPassword(event.currentTarget.value)} />
                   {((typingConfirmPassword === "") || (typingPassword === typingConfirmPassword)) ? (<span hidden={true}/>) : (<span style = {{color : "red", order : 3, fontSize : "12px"}}>입력하신 비밀번호와 동일하게 입력해주세요.</span>)}
                 </Password>
-
                {/* 약관동의 & 제출버튼 */}
                 <Agreement/>
-                <SummitButton type ="submit" style = {{background : (isSummit(typingPassword, typingConfirmPassword, typingEmail)) ? "yellow" : "#E4E5ED", color : isSummit(typingPassword, typingConfirmPassword, typingEmail) ? "black" : "#9A9BA7" }}>버튼만 누르면 가입완료!</SummitButton>
+                <SummitButton onClick={onSubmitAllHandler} type ="submit" style = {{background : (isSummit(typingPassword, typingConfirmPassword, typingEmail)) ? "yellow" : "#E4E5ED", color : isSummit(typingPassword, typingConfirmPassword, typingEmail) ? "black" : "#9A9BA7" }}>버튼만 누르면 가입완료!</SummitButton>
           </Content>
         </Frame>
       </Container>
@@ -133,7 +130,7 @@ const Image = styled.img`
   border-radius: 0px;
 `;
 
-const Content = styled.form`
+const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
