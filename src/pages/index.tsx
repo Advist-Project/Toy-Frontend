@@ -1,19 +1,23 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import styled from "@emotion/styled";
-import { Banner } from "components/banner";
+import Head from "next/head";
+import { APP_NAME } from "common/constants";
+import { Layout } from "components/layout";
 import { BookCardList } from "components/book-card-list";
 
 function IndexPage({books}: InferGetServerSidePropsType<typeof getServerSideProps>){
   console.log(books);
 
   return (
-    <Background>
-      <Banner />
+    <Layout>
+      <Head>
+        <title>{APP_NAME}</title>
+      </Head>
       <Container>
         <Title>이달의 베스트셀러</Title>
         <BookCardList data={books} />
       </Container>
-    </Background>
+    </Layout>
   );
 }
 
@@ -36,8 +40,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
     props: body,
   }
 }
-
-const Background = styled.div``;
 
 const Container = styled.div`
   padding-top: 48px;

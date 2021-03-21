@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import styled from "@emotion/styled";
 //import axios from "axios";
+import { Layout } from "components/layout";
 import { RequestBootpay } from '../../components/request-bootpay';
 import { priceFormat } from '../../components/formatter';
 
@@ -49,7 +50,7 @@ function OrderPage({BookData}: InferGetServerSidePropsType<typeof getServerSideP
   let [agreementState, setAgreementState] = useState<boolean>(false);
 
   return (
-    <Background>
+    <Layout title="결제하기">
       <Title>결제하기</Title>
       <LayoutContainer>
         <OrderMain>
@@ -144,7 +145,7 @@ function OrderPage({BookData}: InferGetServerSidePropsType<typeof getServerSideP
           </OrderSummaryContent>
         </OrderSummary>
       </LayoutContainer>
-    </Background>
+    </Layout>
   )
 }
 
@@ -170,9 +171,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: { BookData: data },
   }
 }
-
-
-const Background = styled.div``;
 
 const Title = styled.h2`
   width: 1170px;

@@ -2,9 +2,10 @@ import React from "react";
 import styled from "@emotion/styled";
 import Head from "next/head";
 import { APP_NAME } from "common/constants";
+import { Header } from "components/header";
 
 interface ILayoutProps {
-  title: string;
+  title?: string;
 }
 
 export const Layout: React.FC<ILayoutProps> = ({ children, title }) => {
@@ -15,6 +16,7 @@ export const Layout: React.FC<ILayoutProps> = ({ children, title }) => {
           {title} | {APP_NAME}
         </title>
       </Head>
+      <Header />
       <Children>{children}</Children>
     </Container>
   );

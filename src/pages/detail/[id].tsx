@@ -1,5 +1,6 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import styled from "@emotion/styled";
+import { Layout } from "components/layout";
 import { Rating, RatingBig } from "components/rating";
 import { ReviewList } from "components/review-card-list";
 
@@ -11,7 +12,7 @@ function DetailPage({BookData, Comment}: InferGetServerSidePropsType<typeof getS
   const { seq, title, description, owner, ownerIcon } = BookData.detail;
 
   return (
-    <Background>
+    <Layout title={title}>
       <Container>
         <Content>
           {/* 왼쪽 영역 */}
@@ -50,7 +51,7 @@ function DetailPage({BookData, Comment}: InferGetServerSidePropsType<typeof getS
           </RightModules>
         </Content>
       </Container>
-    </Background>
+    </Layout>
   );
 }
 
@@ -99,8 +100,6 @@ function Tags(props: { values: string[] }) {
     </Tags>
   );
 }
-
-const Background = styled.div``;
 
 const Container = styled.div`
   padding-top: 48px;
