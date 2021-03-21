@@ -202,11 +202,13 @@ const OrderInfo = styled.section`
 
 const BookInfo = styled.div`
   display: flex;
+  align-items: flex-start;
   margin-bottom: 24px;
 `;
 
 const BookImg = styled.img`
   width: 120px;
+  height: auto;
   margin-right: 12px;
   border: 1px solid #f2f3f7;
   border-radius: 4px;
