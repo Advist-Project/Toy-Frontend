@@ -1,19 +1,25 @@
 import React from "react";
 
 import styled from "@emotion/styled";
+import { priceFormat } from './formatter';
 
 interface IBookCardProps {
-  idx: number;
+  seq: number;
+  title: string;
+  price: number;
+  img: string;
 }
 
-export const BookCard: React.FC<IBookCardProps> = ({ idx }) => {
+export const BookCard: React.FC<IBookCardProps> = ({ seq, title, price, img }) => {
   return (
     <Container>
-      <a href={`/detail/${idx}`}>
-        <Image src="https://d2v80xjmx68n4w.cloudfront.net/gigs/bNuAr1602485711.jpg" />
+      <a href={`/detail/${seq}`}>
+        <ImageContainer>
+          <Image src={img} />
+        </ImageContainer>
         <Content>
-          <Title>전자책 부문 1위 '돈 버는 전자책 작성법 2021'을 드립니다.</Title>
-          <Price>22,000원</Price>
+          <Title>{title}</Title>
+          <Price>{priceFormat(price)}원</Price>
         </Content>
       </a>
     </Container>
@@ -23,12 +29,29 @@ export const BookCard: React.FC<IBookCardProps> = ({ idx }) => {
 const Container = styled.div`
   width: 216px;
   cursor: pointer;
+  margin-bottom: 16px;
+
+  & a {
+    text-decoration: none;
+    color: #303441;
+  }
+`;
+
+const ImageContainer = styled.div`
+  width: 100%;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.1);
 `;
 
 const Image = styled.img`
+  display: block;
   width: 100%;
-  border-radius: 8px;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.23);
+  transition: all 0.4s ease-in-out;
+
+  &:hover {
+    transform: scale(1.25);
+  }
 `;
 
 const Content = styled.div`
@@ -38,7 +61,7 @@ const Content = styled.div`
 
 const Title = styled.h5`
   margin-top: 8px;
-
+  margin-bottom: 16px;
   font-size: 14px;
   color: #303441;
   line-height: 1.2;
