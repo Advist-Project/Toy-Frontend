@@ -15,7 +15,7 @@ export const Agreement = () => {
     if(isChecked1 && isChecked2 && isChecked3 && isChecked4 && isChecked5) setCheckedAll(true)
     else setCheckedAll(false)
   });
-
+  
   const checkAllfunction = () => {
     setCheckedAll(!isCheckedAll)
     setChecked1(!isCheckedAll)
