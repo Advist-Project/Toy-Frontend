@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 
 import { Agreement } from  "components/agreement";
 import {isEmail, isPassword, isSummit} from "components/check";
+import { registerUser } from "../_actions/user_action";
 
 function RegisterPage(){
 
@@ -23,9 +24,11 @@ function RegisterPage(){
     let body = {
       name : typingName,
       email : typingEmail,
-      Password : typingPassword
+      password : typingPassword
     }
     console.log(body)
+
+    registerUser(body)
   }
 
   return (
@@ -43,7 +46,7 @@ function RegisterPage(){
                   <EmailHeader>이메일</EmailHeader>
                   <EmailSummit>
                     <EmailInput type = "email" value={typingEmail} placeholder ="이메일을 입력하세요"  onChange = {(event) => setEmail(event.currentTarget.value)}/>
-                    <EmailConfirm onClick = {onSubmitEmailHandler} type="submit" style = {{background : isEmail(typingEmail) ? "yellow" : "#E4E5ED", color : isEmail(typingEmail) ? "black" : "#9A9BA7" }} >인증하기</EmailConfirm>
+                    <EmailConfirm disabled = {!isEmail(typingEmail)} onClick = {onSubmitEmailHandler} type="submit" style = {{background : isEmail(typingEmail) ? "yellow" : "#E4E5ED", color : isEmail(typingEmail) ? "black" : "#9A9BA7" }} >인증하기</EmailConfirm>
                   </EmailSummit>   
                   {(typingEmail === "" || isEmail(typingEmail)) ? (<span hidden={true}/>) : (<span style = {{color : "red", order : 3, fontSize : "12px"}}>이메일 형식이 유효하지 않습니다.</span>)}               
                 </Email>
@@ -56,7 +59,7 @@ function RegisterPage(){
                 </Password>
                {/* 약관동의 & 제출버튼 */}
                 <Agreement/>
-                <SummitButton onClick={onSubmitAllHandler} type ="submit" style = {{background : (isSummit(typingPassword, typingConfirmPassword, typingEmail)) ? "yellow" : "#E4E5ED", color : isSummit(typingPassword, typingConfirmPassword, typingEmail) ? "black" : "#9A9BA7" }}>버튼만 누르면 가입완료!</SummitButton>
+                <SummitButton disabled={!isSummit(typingPassword, typingConfirmPassword, typingEmail)} onClick={onSubmitAllHandler} type ="submit" style = {{background : (isSummit(typingPassword, typingConfirmPassword, typingEmail)) ? "yellow" : "#E4E5ED", color : isSummit(typingPassword, typingConfirmPassword, typingEmail) ? "black" : "#9A9BA7" }}>버튼만 누르면 가입완료!</SummitButton>
           </Content>
         </Frame>
       </Container>
@@ -64,7 +67,12 @@ function RegisterPage(){
   );
 };
 
-const Background = styled.div``;
+const Background = styled.div`
+  position : fixed;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+`;
 
 const Container = styled.div`
   padding-top: 48px;
